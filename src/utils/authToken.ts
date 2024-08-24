@@ -12,23 +12,13 @@ export const isAuthenticated = (
   if (!token) {
     return res.status(401).json({ message: 'No token provided' });
   }
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+  console.log(token)
+  jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
     if (err) {
+        console.log(err)
       return res.status(403).json({ message: 'Failed to authenticate token' });
     }
     req.user = decoded;
     next();
   });
-};
-
-export const generateToken = (payload: {
-  id: string;
-  email: string;
-  name: string;
-}) => {
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
-};
-
-export const generateRefreshToken = (payload: any) => {
-  return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
 };

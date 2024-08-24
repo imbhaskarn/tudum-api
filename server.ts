@@ -5,7 +5,7 @@ import app from './src/app';
 
 const PORT = process.env.PORT || 5000;
 
-console.log(process.env.PORT);
+
 
 const server = createServer(app);
 

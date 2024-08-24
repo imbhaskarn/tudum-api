@@ -1,6 +1,5 @@
 import { defineConfig } from 'drizzle-kit';
 
-console.log(process.env.DATABASE_URL);
 export default defineConfig({
   schema: './src/db/schema.ts',
   out: './src/db/migrations',
@@ -8,6 +7,5 @@ export default defineConfig({
   dbCredentials: {
     url: process.env.DATABASE_URL as string
   },
-  verbose: true,
   strict: true
 });
