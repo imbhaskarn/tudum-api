@@ -8,6 +8,7 @@
     "start": "node dist/app.js",
     "db:generate": "drizzle-kit generate --config ./drizzle.config.ts",
     "db:migrate": "tsx src/db/migrate.ts",
+    "format": "prettier --write .",
     "dev": "nodemon"
   },
   "keywords": [],

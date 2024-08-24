@@ -1,7 +1,7 @@
 import { createServer } from 'http';
-import app from './src/app';
 import { Socket } from 'socket.io';
 import { Server } from 'socket.io';
+import app from './src/app';
 
 const PORT = process.env.PORT || 5000;
 

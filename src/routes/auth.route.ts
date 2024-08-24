@@ -1,8 +1,8 @@
+import { compare, hash } from 'bcrypt';
 import { Router } from 'express';
-import { registrationSchema } from '../utils/joi/schema';
 import db from '../db';
 import { User } from '../db/schema';
-import { compare, hash } from 'bcrypt';
+import { registrationSchema } from '../utils/joi/schema';
 
 const authRouter = Router();
 
