@@ -18,5 +18,8 @@ jobs:
         with:
           node-version: 18
 
+
+      - name: install prettier
+        run: npm install prettier
       - name: Check code formatting
         run: npm run format
