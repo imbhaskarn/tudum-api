@@ -1,7 +1,12 @@
-import express from "express";
-import dotenv from "dotenv";
+import express from 'express';
+import dotenv from 'dotenv';
+import authRouter from './routes/auth.route';
 dotenv.config();
 
-const server = express();
+const app = express();
 
-export default server;
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/api/auth', authRouter);
+
+export default app;

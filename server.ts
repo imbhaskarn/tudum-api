@@ -1,26 +1,28 @@
-import { createServer } from "http";
-import app from "./src/app";
-import { Socket } from "socket.io";
-import { Server } from "socket.io";
+import { createServer } from 'http';
+import app from './src/app';
+import { Socket } from 'socket.io';
+import { Server } from 'socket.io';
 
 const PORT = process.env.PORT || 5000;
+
+console.log(process.env.PORT);
 
 const server = createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "*",
-  },
+    origin: '*'
+  }
 });
 
-io.on("connection", (socket: Socket) => {
-  io.emit("message", "connected to server");
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
+io.on('connection', (socket: Socket) => {
+  io.emit('message', 'connected to server');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
   });
-  socket.on("message", (msg: string) => {
+  socket.on('message', (msg: string) => {
     console.log(msg);
-    io.emit("message", "the server says: " + msg);
+    io.emit('message', 'the server says: ' + msg);
   });
 });
 

@@ -1,0 +1,34 @@
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import 'dotenv/config';
+
+export const isAuthenticated = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ message: 'Failed to authenticate token' });
+    }
+    req.user = decoded;
+    next();
+  });
+};
+
+export const generateToken = (payload: {
+  id: string;
+  email: string;
+  name: string;
+}) => {
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
+};
+
+export const generateRefreshToken = (payload: any) => {
+  return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+};
