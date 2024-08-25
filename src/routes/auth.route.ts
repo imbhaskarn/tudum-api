@@ -3,6 +3,7 @@ import { Router } from 'express';
 import JWT from 'jsonwebtoken';
 import db from '../db';
 import { User } from '../db/schema';
+
 import { loginSchema, registrationSchema } from '../utils/joi/schema';
 
 const authRouter = Router();
@@ -154,15 +155,16 @@ authRouter.get('/refresh-token', async (req, res) => {
   JWT.verify(
     token,
     process.env.JWT_REFRESH_SECRET as string,
-    (err, decoded) => {
+    (err, decoded: any) => {
       if (err) {
         return res
           .status(403)
           .json({ message: 'Failed to authenticate token' });
       }
       const accessToken = JWT.sign(
-        decoded as object,
-        process.env.JWT_SECRET as string
+        { id: decoded.id },
+        process.env.JWT_SECRET as string,
+        { expiresIn: '15m' }
       );
       return res.status(200).json({
         success: true,
