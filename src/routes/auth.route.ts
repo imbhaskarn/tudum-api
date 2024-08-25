@@ -50,7 +50,23 @@ authRouter.post('/register', async (req, res) => {
       success: true,
       message: 'User created',
       data: {
-        user: user
+        user: user[0],
+        auth: {
+          accessToken: JWT.sign(
+            { id: user[0].id },
+            process.env.JWT_SECRET as string,
+            {
+              expiresIn: '15m'
+            }
+          ),
+          refreshToken: JWT.sign(
+            { id: user[0].id },
+            process.env.JWT_REFRESH_SECRET as string,
+            {
+              expiresIn: '7d'
+            }
+          )
+        }
       }
     });
   } catch (error) {
@@ -146,7 +162,7 @@ authRouter.get('/refresh-token', async (req, res) => {
       }
       const accessToken = JWT.sign(
         decoded as object,
-        process.env.JWT_SECRET as string,
+        process.env.JWT_SECRET as string
       );
       return res.status(200).json({
         success: true,
