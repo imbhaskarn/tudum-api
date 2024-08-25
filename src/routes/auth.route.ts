@@ -10,12 +10,14 @@ const authRouter = Router();
 
 authRouter.post('/register', async (req, res) => {
   try {
+    console.log(req.body);
     const { error } = registrationSchema.validate(req.body);
     if (error) {
       return res
         .status(400)
         .json({ success: false, message: error.message.replace(/"/g, '') });
     }
+
     const { email, password, name } = req.body;
     const existingUser = await db.query.User.findFirst({
       columns: { email: true, id: true },
