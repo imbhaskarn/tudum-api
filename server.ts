@@ -1,11 +1,11 @@
+import { sql } from 'drizzle-orm';
 import { createServer } from 'http';
 import { Socket } from 'socket.io';
 import { Server } from 'socket.io';
 import app from './src/app';
+import db from './src/db';
 
 const PORT = process.env.PORT || 5000;
-
-
 
 const server = createServer(app);
 
@@ -14,7 +14,6 @@ const io = new Server(server, {
     origin: '*'
   }
 });
-
 
 io.on('connection', (socket: Socket) => {
   io.emit('message', 'connected to server');
@@ -27,6 +26,7 @@ io.on('connection', (socket: Socket) => {
   });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, async () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+  console.log((await db.execute(sql`SELECT true AS connected`))[0]);
 });

@@ -1,7 +1,8 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { timestamp } from 'drizzle-orm/mysql-core';
+import { sql } from 'drizzle-orm';
 import express from 'express';
+import db from './db';
 import authRouter from './routes/auth.route';
 import userRouter from './routes/user.route';
 
@@ -30,6 +31,16 @@ app.get('/', (req, res) => {
     message: 'Welcome to Tudum API',
     status: 'success',
     timestamp: new Date().toISOString()
+  });
+});
+app.get('/with-db', async (req, res) => {
+  return res.status(200).json({
+    message: 'Welcome to Tudum API',
+    status: 'success',
+    timestamp: new Date().toISOString(),
+    data: {
+      db: (await db.execute(sql`SELECT true AS connected`))[0]
+    }
   });
 });
 app.use('/api/auth', authRouter);
