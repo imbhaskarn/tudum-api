@@ -5,6 +5,7 @@ import express from 'express';
 import db from './db';
 import authRouter from './routes/auth.route';
 import userRouter from './routes/user.route';
+import roomRouter from './routes/rooms.routes';
 
 dotenv.config();
 
@@ -45,6 +46,7 @@ app.get('/with-db', async (req, res) => {
 });
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+app.use('/api/rooms', roomRouter);
 
 app.use((req, res) => {
   return res.status(404).json({

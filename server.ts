@@ -16,8 +16,20 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket: Socket) => {
-  io.emit('message', 'connected to server',);
+  const roomName = 'some_room';
+  socket.join(roomName);
+  console.log(`${socket.id} joined room: ${roomName}`);
   console.log('a user connected');
+
+  socket.on('joinUserRoom', (userId) => {
+    // Create or join a room bound to the user's ID
+    const userRoom = `room_${userId}`;
+    socket.join(userRoom);
+    console.log(`${socket.id} joined room: ${userRoom}`);
+    // Optionally send a confirmation back to the client
+    socket.emit('roomJoined', userRoom);
+  });
+
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
@@ -27,7 +39,7 @@ io.on('connection', (socket: Socket) => {
   });
   socket.on('message', (msg: string) => {
     console.log(msg);
-    io.emit('message', msg);
+    socket.broadcast.emit('message', { message: msg, sender: socket.id });
   });
 });
 
